@@ -1,10 +1,9 @@
-from enum import Enum
-
 import pandas
 import pandas as pd
 import matplotlib.pyplot as plt
 
-world_economics_path = r"D:\code\python\ml\xgboost-house-prices\datasets\regression\WEOApr2022all.csv"
+# source:https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2022/WEOApr2022all.ashx
+world_economics_path = r"WEOApr2022all.csv"
 
 oecd_countries_iso = ["AUS", "AUT", "BEL", "CAN", "CHL", "CZE", "DNK", "EST", "FIN", "FRA", "DEU", "GRC", "HUN", "ISL",
                       "IRL", "ISR", "ITA", "JPN", "KOR", "LVA", "LUX", "MEX", "NLD", "NZL", "NOR", "POL", "PRT",
@@ -14,12 +13,13 @@ gdp_per_capita_ppp = 'GDP is expressed in constant international dollars per per
                      ' Data are derived by dividing constant price purchasing-power parity (PPP)'\
                      ' GDP by total population.'
 
-Israel_gdp_compare_avg_title = "GDP (PPP) per capita comparison"
 
+Israel_gdp_compare_avg_title = "GDP (PPP) per capita comparison"
 
 AVG_OECD_GDP_ROW = 'Average OECD GDP'
 ISRAEL_RANK_ROW = 'Israel_rank'
 ISR_PERCENTAGE_OF_AVG_OECD_ROW = 'Israel percentage of average OECD country'
+ISRAEL_GDP_ROW = 'Israel GDP'
 
 
 def calculate_israel_gdp_per_capita_ppp():
@@ -38,22 +38,25 @@ def calculate_israel_gdp_per_capita_ppp():
 
     df = filter_df(df)
     df.to_csv("comparison_data.csv")
-    plot_data(df.loc[[AVG_OECD_GDP_ROW, 'Israel GDP']], Israel_gdp_compare_avg_title)
-    plot_data(df.loc[[ISRAEL_RANK_ROW]], "Israel rank")
+    plot_data(df.loc[[AVG_OECD_GDP_ROW, ISRAEL_GDP_ROW]], Israel_gdp_compare_avg_title)
+    plot_data(df.loc[[ISRAEL_RANK_ROW]], ISRAEL_RANK_ROW, invert_y=True)
     plot_data(df.loc[[ISR_PERCENTAGE_OF_AVG_OECD_ROW]],
-              "Israel GDP percentage of average OECD country")
+              ISR_PERCENTAGE_OF_AVG_OECD_ROW)
 
 
 def filter_df(df):
     df = df.loc[[AVG_OECD_GDP_ROW, ISRAEL_RANK_ROW, ISR_PERCENTAGE_OF_AVG_OECD_ROW]]\
         .append(df[df["ISO"] == "ISR"])
-    df.index = df.index[:-1].append(pd.Index(['Israel GDP']))
+    df.index = df.index[:-1].append(pd.Index([ISRAEL_GDP_ROW]))
     return df.filter([str(x) for x in range(1995, 2023)])
 
 
-def plot_data(df, title):
-    t_df_plot = df.T;
+def plot_data(df, title, invert_y=False):
+    t_df_plot = df.T  # for easy plotting we transpose the matrix
     t_df_plot.plot(title=title)
+    if invert_y:
+        ax = plt.gca()
+        ax.invert_yaxis()
     plt.show()
 
 
