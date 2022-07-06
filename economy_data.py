@@ -16,10 +16,10 @@ gdp_per_capita_ppp = 'GDP is expressed in constant international dollars per per
 
 Israel_gdp_compare_avg_title = "GDP (PPP) per capita comparison"
 
-AVG_OECD_GDP_ROW = 'Average OECD GDP'
+AVG_OECD_GDP_ROW = 'Average OECD GDP per capita'
 ISRAEL_RANK_ROW = 'Israel Rank (lower is better)'
 ISR_PERCENTAGE_OF_AVG_OECD_ROW = 'Israel percentage of OECD average'
-ISRAEL_GDP_ROW = 'Israel GDP'
+ISRAEL_GDP_ROW = 'Israel GDP per capita'
 
 
 def calculate_israel_gdp_per_capita_ppp():
